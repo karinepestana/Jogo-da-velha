@@ -13,6 +13,21 @@ class Node:
 		self.nodo_pai = None
 		self.filhos = None
 
+	def insert(self, lista):
+		nos = self.filhos
+		estado = None
+		while nos:
+			estado = nos.pop(0)
+
+			if estado.filhos != None:
+				nos.extend(estado.filhos)
+			else:
+				break
+		if estado == None:
+			self.filhos = lista
+		else:
+			estado.filhos = lista	
+
 def expande(tabuleiro):
 	lista = []
 	for i in range(0,size):
@@ -26,14 +41,15 @@ def expande(tabuleiro):
 				aux = []
 	return lista
 
-def min_max(lista_dados, nodo)
+def min_max(lista_dados, nodo):
 	estado_atual = None
 	while lista_dados:
 		estado_atual = lista_dados.pop(0)
 		#nos_abertos = nos_abertos +1
 
 		lista = expande(estado_atual)
-		if lista != []
+		nodo.insert(lista)
+		if lista:
 			lista_dados.extend(lista)
 		
 
@@ -54,26 +70,28 @@ def estado_final(estado):
 		return True, estado[0][0]
 	elif estado[0][2] == estado[1][1] == estado[2][0] == 'x':
 		return True, estado[0][2]
-	else return False, '0'
+	else:
+		return False, '0'
 
 size = 3 
 tabuleiro = np.array(['0', '0', '0', '0', '0', '0', '0', '0', '0']).reshape(size,size)
 nivel = 0
 nodo = Node(tabuleiro)
 
-while estado_final(nodo.data) == list(False, '0'):
-	print("Estado atual do tabuleiro:\n")
-	print(nodo.data)
-	print("Entre com a posição que deseja jogar")
-	jogador2L = int(input("L:"))
-	jogador2C = int(input("C:"))
-	nivel = nivel + 1
+#while estado_final(nodo.data) == list(False, '0'):
+print("Estado atual do tabuleiro:\n")
+print(nodo.data)
+print("Entre com a posição que deseja jogar")
+jogador2L = int(input("L:"))
+jogador2C = int(input("C:"))
+nivel = nivel + 1
 
-	nodo.data[jogador2L][jogador2C] = 'o'
+nodo.data[jogador2L][jogador2C] = 'o'
 
-	lista_dados = list()
-	lista_dados.append(nodo)
-	min_max(lista_dados)
+lista_dados = list()
+lista_dados.append(nodo)
+min_max(lista_dados, nodo)
+print("FIM")
 
 
 
